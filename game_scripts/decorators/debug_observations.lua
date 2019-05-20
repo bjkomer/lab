@@ -32,6 +32,14 @@ local camera = {pos = {0, 0, 500}, look = {90, 90, 0}}
 local mazeLayout = ''
 local mazeVariation = ''
 
+-- Custom goal location observations added here
+local goalX = 0
+local goalY = 0
+
+local function goalPosition()
+  return tensor.DoubleTensor{goalX, goalY}
+end
+
 local ASPECT = SCREEN_SHAPE.height / SCREEN_SHAPE.width
 local function cameraUp(x, y, maxHeight)
   return math.max(x - maxHeight, (y - maxHeight) / ASPECT) + maxHeight
@@ -251,6 +259,12 @@ local function getMazeVariation()
   return mazeVariation
 end
 
+-- Function for setting the goal location in the observations
+function debug_observations.setGoal(x, y)
+  goalX = x
+  goalY = y
+end
+
 function debug_observations.setMaze(maze)
   mazeLayout = maze:entityLayer()
   mazeVariation = maze:variationsLayer()
@@ -369,6 +383,9 @@ function debug_observations.extend(custom_observations)
   -- Flag information (x, y, z, {NONE = 0, HOME = 1, AWAY = 2})
   co.addSpec('DEBUG.FLAGS.RED_HOME', 'Doubles', {4}, redFlagHome)
   co.addSpec('DEBUG.FLAGS.BLUE_HOME', 'Doubles', {4}, blueFlagHome)
+
+  -- Goal location information
+  co.addSpec('DEBUG.GOAL.POS', 'Doubles', {2}, goalPosition)
 end
 
 

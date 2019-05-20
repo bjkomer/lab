@@ -139,6 +139,9 @@ function factory.createLevelApi(kwargs)
       kwargs.level:start(api._maze, episode, seed)
     end
     debug_observations.setMaze(api._maze)
+
+    -- Adding new goal X and Y observations here
+    debug_observations.setGoal(kwargs.level._goalX, kwargs.level._goalY)
   end
 
   function api:updateSpawnVars(spawnVars)
